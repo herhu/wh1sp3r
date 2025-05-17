@@ -2,7 +2,7 @@ import os
 from typing import Optional
 import whisper
 
-def load_whisper_model(user_id: str, model_type: str, language: Optional[str]) -> whisper.Whisper:
+def load_whisper_model(user_id: str, model_type: str, language: Optional[str]):
     # Decide path
     if model_type == "private":
         model_path = f"data/users/{user_id}/model"

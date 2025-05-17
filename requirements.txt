@@ -1,4 +1,8 @@
 fastapi
 uvicorn
-whisper
 mangum
+torch
+numpy
+ffmpeg-python
+python-multipart
+openai-whisper
