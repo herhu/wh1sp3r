@@ -1,0 +1,28 @@
+aws logs tail /aws/lambda/whisperTranscribe --follow --region eu-north-1
+
+
+aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 209540198517.dkr.ecr.eu-north-1.amazonaws.com
+
+
+docker buildx build \
+  --builder lambda-builder \
+  --platform linux/amd64 \
+  --push \
+  --provenance=false \
+  --sbom=false \
+  -t 209540198517.dkr.ecr.eu-north-1.amazonaws.com/whisper-lambda:latest \
+  .
+
+
+aws lambda update-function-code \
+  --function-name whisperTranscribe \
+  --image-uri 209540198517.dkr.ecr.eu-north-1.amazonaws.com/whisper-lambda:latest \
+  --region eu-north-1
+
+
+
+curl -X POST https://vref5l3wmxav4lwkwkj22qaex40vshdg.lambda-url.eu-north-1.on.aws/transcribe \
+  -F "file=@sample_1.wav" \
+  -F "user_id=hernan" \
+  -F "model_type=internal" \
+  -F "language=es"
